@@ -48,4 +48,17 @@
       </plugin>
     </plugins>
   </build>
+
+  <distributionManagement>
+    <repository>
+      <id>zextras-java-sdk</id>
+      <name>Zextras public maven release repository</name>
+      <url>https://zextras.jfrog.io/artifactory/public-maven-repo</url>
+    </repository>
+    <snapshotRepository>
+      <id>zextras-java-sdk</id>
+      <name>Zextras public maven snapshot repository</name>
+      <url>https://zextras.jfrog.io/artifactory/maven-snapshot</url>
+    </snapshotRepository>
+  </distributionManagement>
 </project>
