@@ -6,7 +6,7 @@
 
   <groupId>com.zextras.carbonio</groupId>
   <artifactId>carbonio-systemd-notify</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Carbonio Systemd Notify</name>
@@ -31,7 +31,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>1.0.0</version>
+        <version>3.13.0</version>
         <configuration>
           <compilerArgs>
             <arg>--enable-preview</arg>
@@ -41,7 +41,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>1.0.0</version>
+        <version>3.4.0</version>
         <configuration>
           <argLine>--enable-preview --enable-native-access=ALL-UNNAMED</argLine>
         </configuration>
