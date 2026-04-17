@@ -47,7 +47,7 @@ pipeline {
 
         stage('Build') {
             steps {
-                container('jdk-21') {
+                container('jdk-25') {
                     sh "mvn ${MVN_OPTS} -DskipTests clean package"
                 }
             }
@@ -58,7 +58,7 @@ pipeline {
                 expression { params.SKIP_TESTS == false }
             }
             steps {
-                container('jdk-21') {
+                container('jdk-25') {
                     sh "mvn ${MVN_OPTS} verify"
                 }
             }
@@ -77,7 +77,7 @@ pipeline {
                 }
             }
             steps {
-                container('jdk-21') {
+                container('jdk-25') {
                     withCredentials([file(credentialsId: 'jenkins-maven-settings.xml', variable: 'SETTINGS_PATH')]) {
                         sh "mvn ${MVN_OPTS} -s " + SETTINGS_PATH + ' -DskipTests deploy'
                     }
