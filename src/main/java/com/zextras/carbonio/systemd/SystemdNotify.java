@@ -24,8 +24,8 @@ import java.util.logging.Logger;
  * <p>When {@code NOTIFY_SOCKET} is not set (e.g. running outside systemd, in dev/test), all calls
  * are guaranteed no-ops — no native library is loaded, no FFM code executes.
  *
- * <p>Requires {@code --enable-preview} on Java 21 (FFM becomes stable in Java 22+). The JVM must
- * also be started with {@code --enable-native-access=ALL-UNNAMED} to permit the FFM downcall.
+ * <p>Requires Java 22+ (FFM is stable from JEP 454). The JVM must be started with
+ * {@code --enable-native-access=ALL-UNNAMED} to permit the FFM downcall.
  */
 public class SystemdNotify {
 
@@ -73,7 +73,7 @@ public class SystemdNotify {
       return;
     }
     try (Arena arena = Arena.ofConfined()) {
-      MemorySegment msg = arena.allocateUtf8String(state);
+      MemorySegment msg = arena.allocateFrom(state);
       int rc = (int) SD_NOTIFY.invoke(0, msg);
       if (rc < 0) {
         LOG.log(Level.WARNING, "sd_notify failed with rc={0}", rc);
