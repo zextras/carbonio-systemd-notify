@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 library(
-    identifier: 'jenkins-lib-common@1.7.5',
+    identifier: 'jenkins-lib-common@v4.3.0',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         remote: 'git@github.com:zextras/jenkins-lib-common.git',
@@ -78,9 +78,11 @@ pipeline {
             }
             steps {
                 container('jdk-25') {
-                    withCredentials([file(credentialsId: 'jenkins-maven-settings.xml', variable: 'SETTINGS_PATH')]) {
-                        sh "mvn ${MVN_OPTS} -s " + SETTINGS_PATH + ' -DskipTests deploy'
-                    }
+                    mavenDeploy(
+                        mvnOpts: MVN_OPTS,
+                        extraArgs: '-DskipTests',
+                        logFile: 'mvn-deploy.log'
+                    )
                 }
             }
         }
