@@ -6,7 +6,7 @@
 
   <groupId>com.zextras.carbonio</groupId>
   <artifactId>carbonio-systemd-notify</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.1</version>
   <packaging>jar</packaging>
 
   <name>Carbonio Systemd Notify</name>
