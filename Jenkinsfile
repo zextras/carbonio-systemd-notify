@@ -72,7 +72,7 @@ pipeline {
         stage('Deploy') {
             when {
                 anyOf {
-                    branch 'devel'
+                    expression { env.BRANCH_IS_PRIMARY == 'true' }
                     buildingTag()
                 }
             }
