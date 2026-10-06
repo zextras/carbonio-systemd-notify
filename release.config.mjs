@@ -7,7 +7,7 @@
  */
 export default {
   branches: ['main'],
-  tagFormat: "${version}",
+  tagFormat: "v${version}",
   plugins: [
     [
       '@semantic-release/commit-analyzer',
