@@ -26,6 +26,20 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>nexus-java-sdk</id>
+      <url>https://repo.zextras.tools/repository/java-sdk/</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>nexus-java-sdk</id>
+      <url>https://repo.zextras.tools/repository/java-sdk/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <build>
     <plugins>
       <plugin>
