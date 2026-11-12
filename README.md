@@ -20,6 +20,24 @@ SystemdNotify.ready("myservice ready on port 8080");
 SystemdNotify.ready(null);
 ```
 
+### Extending the start timeout
+
+While a long startup step runs (for example a database migration), keep systemd from killing the
+service by extending the start timeout. `extendTimeout` sends `EXTEND_TIMEOUT_USEC` (systemd 236+):
+the service must send another message within the given duration, so call it periodically.
+
+```java
+// Tell systemd to wait up to 120 s more, and show what is going on
+SystemdNotify.extendTimeout(Duration.ofSeconds(120), "Running database migrations");
+
+// Update only the status text shown by `systemctl status`
+SystemdNotify.status("Migration 3/10");
+```
+
+`extendTimeout` throws `IllegalArgumentException` for a `null`, zero or negative duration. A `null`
+or empty status is omitted from the message; newlines in a status are replaced with spaces so they
+cannot inject other `sd_notify` variables.
+
 ### Quarkus
 
 ```java
