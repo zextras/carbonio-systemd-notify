@@ -82,7 +82,7 @@ ExecStart=/path/to/java \
 
 | Requirement | Details |
 |---|---|
-| Java | 21+ (`--enable-preview`) or 22+ (FFM stable) |
+| Java | 21 with `--enable-preview` (class files are preview-marked and load only on JDK 21; moving to Java 22+ requires a new release) |
 | JVM flags | `--enable-preview --enable-native-access=ALL-UNNAMED` |
 | Runtime | `libsystemd.so.0` (present on any systemd-based Linux) |
 | Compiler | `--enable-preview` in `maven-compiler-plugin` |
