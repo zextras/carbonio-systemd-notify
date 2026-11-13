@@ -40,7 +40,7 @@ export default {
     [
       '@semantic-release/exec',
       {
-        prepareCmd: "sed -i '0,/<version>.*-SNAPSHOT<\\/version>/s|<version>.*-SNAPSHOT</version>|<version>${nextRelease.version}</version>|' pom.xml"
+        prepareCmd: "sed -i 's|<revision>.*</revision>|<revision>${nextRelease.version}</revision>|' pom.xml"
       }
     ],
     [

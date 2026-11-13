@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
 library(
-    identifier: 'jenkins-lib-common@v5.0.2',
+    identifier: 'jenkins-lib-common@v5.4.1',
     retriever: modernSCM([
         $class: 'GitSCMSource',
         remote: 'git@github.com:zextras/jenkins-lib-common.git',
@@ -80,7 +80,8 @@ pipeline {
                 container('jdk-21') {
                     mavenDeploy(
                         mvnOpts: MVN_OPTS,
-                        extraArgs: '-DskipTests',
+                        // Branch builds publish ${revision}-SNAPSHOT; only the release tag drops the suffix.
+                        extraArgs: '-DskipTests' + (env.TAG_NAME ? ' -Dchangelist=' : ''),
                         logFile: 'mvn-deploy.log'
                     )
                 }
