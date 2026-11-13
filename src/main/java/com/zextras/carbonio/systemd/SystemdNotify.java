@@ -11,6 +11,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
+import java.time.Duration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +67,61 @@ public class SystemdNotify {
       msg += "\nSTATUS=" + status;
     }
     notify(msg);
+  }
+
+  /**
+   * Ask systemd to extend the current start (or stop) timeout, optionally updating the status text.
+   *
+   * <p>Sends {@code EXTEND_TIMEOUT_USEC} (systemd 236+): the service must send another message
+   * within {@code extension}, otherwise the timeout expires. Call it periodically during a long
+   * startup step such as a database migration.
+   *
+   * @param extension time within which the next message must arrive, at least one microsecond
+   * @param status status text, or {@code null}/empty to omit it
+   * @throws IllegalArgumentException if {@code extension} is null, or not positive at microsecond
+   *     resolution
+   */
+  public static void extendTimeout(Duration extension, String status) {
+    notify(extendTimeoutMessage(extension, status));
+  }
+
+  /**
+   * Update the human-readable status shown by {@code systemctl status <unit>}.
+   *
+   * @param status status text; a {@code null} or empty value sends nothing
+   */
+  public static void status(String status) {
+    String msg = statusMessage(status);
+    if (msg != null) {
+      notify(msg);
+    }
+  }
+
+  static String extendTimeoutMessage(Duration extension, String status) {
+    if (extension == null) {
+      throw new IllegalArgumentException("extension must not be null");
+    }
+    long micros;
+    try {
+      micros =
+          Math.addExact(
+              Math.multiplyExact(extension.getSeconds(), 1_000_000L), extension.getNano() / 1_000L);
+    } catch (ArithmeticException e) {
+      throw new IllegalArgumentException("extension is out of range: " + extension, e);
+    }
+    if (micros <= 0) {
+      throw new IllegalArgumentException("extension must be at least 1 microsecond: " + extension);
+    }
+    String msg = "EXTEND_TIMEOUT_USEC=" + micros;
+    String statusLine = statusMessage(status);
+    return statusLine == null ? msg : msg + "\n" + statusLine;
+  }
+
+  static String statusMessage(String status) {
+    if (status == null || status.isEmpty()) {
+      return null;
+    }
+    return "STATUS=" + status.replace('\n', ' ').replace('\r', ' ');
   }
 
   private static void notify(String state) {
