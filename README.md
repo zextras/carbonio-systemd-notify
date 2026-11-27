@@ -82,10 +82,10 @@ ExecStart=/path/to/java \
 
 | Requirement | Details |
 |---|---|
-| Java | 21 with `--enable-preview` (class files are preview-marked and load only on JDK 21; moving to Java 22+ requires a new release) |
-| JVM flags | `--enable-preview --enable-native-access=ALL-UNNAMED` |
+| Java | Multi-release jar: JDK 21 loads the base class (needs `--enable-preview`, preview-marked); JDK 22+ loads `META-INF/versions/22/` (final FFM API, no preview flag) |
+| JVM flags | JDK 21: `--enable-preview --enable-native-access=ALL-UNNAMED`; JDK 22+: `--enable-native-access=ALL-UNNAMED` |
 | Runtime | `libsystemd.so.0` (present on any systemd-based Linux) |
-| Compiler | `--enable-preview` in `maven-compiler-plugin` |
+| Compiler | Base: JDK 21, `--enable-preview`. `src/main/java22`: `release 22` via a second `maven-compiler-plugin` execution, which needs a JDK >= 22 in the Maven toolchains (`~/.m2/toolchains.xml`) |
 | Tests | `--enable-preview --enable-native-access=ALL-UNNAMED` in surefire/failsafe `argLine` |
 
 ## Design
